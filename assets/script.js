@@ -67,7 +67,8 @@ function quizStart() {
     placeAnswer(questionNum, buttonChoice);
 
     // Places wrong answers related to question into buttons
-    insertJunk(questionNum, buttonChoice);
+    insertJunk(questionNum);
+    
 
 }
 
@@ -89,13 +90,23 @@ function diceRoll(given) {
     return roll;
 }
 
+// Places answer into random button
 function placeAnswer(questionNum, buttonChoice) {
     var button = document.getElementById(buttonChoice);
     button.textContent = questionAnswer.answer[questionNum];
 }
 
-function insertJunk(questionNum, buttonChoice) {
-    
+// Fills other buttons
+function insertJunk(questionNum) {
+
+    for (var i = 0; i < 4; i++) {
+        button = document.getElementById(i).value;
+        
+        // If button has no text then set text of button to correspond with the question
+        if (button.textContent === "") {
+            button.textContent = wrongAnswers[i][questionNum];
+        }
+    }
 }
 
 
