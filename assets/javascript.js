@@ -15,13 +15,43 @@ var questionAnswer = {
 
     answer: [
         "<script>",
-        "Both are correct",
+        "Both",
         "<script src=\"xxx.js\">",
         "False",
         "alert(\"Hello World\")",
         "function myFunction()"
     ]
 }
+
+var wrongAnswers = {
+    first: [
+        "<javascript>",
+        "<head>",
+        "<script src=xxx.js>",
+        "True",
+        "alertBox(\"Hellow World\"",
+        "function:myFunction()"
+    ],
+
+    second: [
+        "<scripting>",
+        "<body>",
+        "<script href=\"xxx.js\">",
+        "Maybe",
+        "msg(\"Hello World\");",
+        "function = myFunction()"
+    ],
+
+    third: [
+        "<js>",
+        "Neither",
+        "<script name=\"xxx.js\">",
+        "Depends",
+        "msgBox(\"Hello World\");",
+        "myFunction()"
+    ]
+}
+
 
 function quizStart() {
     // Picks a random question
@@ -35,6 +65,10 @@ function quizStart() {
 
     // Places the answer into the button
     placeAnswer(questionNum, buttonChoice);
+
+    // Places wrong answers related to question into buttons
+    insertJunk(questionNum, buttonChoice);
+
 }
 
 
@@ -60,12 +94,16 @@ function placeAnswer(questionNum, buttonChoice) {
     button.textContent = questionAnswer.answer[questionNum];
 }
 
+function insertJunk(questionNum, buttonChoice) {
+    
+}
 
-container.addEventListener("click", function(event) {
-    var element = event.target;
+
+// container.addEventListener("click", function(event) {
+//     var element = event.target;
   
     
-    if (element.matches("button") === true) {
+//     if (element.matches("button") === true) {
       
-    }
-  });
+//     }
+//   });
