@@ -23,6 +23,17 @@ var questionAnswer = {
     ]
 }
 
+// Compares answer to question
+function verification(num) {
+    if (questionAnswer.question[num] === questionAnswer.answer[num]) {
+        return false;
+    }
+
+    else {
+        return true;
+    }
+}
+
 
 
 container.addEventListener("click", function(event) {
