@@ -1,3 +1,14 @@
-.btn {
-    background-color: rgb(167, 117, 167);
+#background {
+    background-color: rgb(233, 233, 233);
+}
+
+/* Change navbar color */
+.navbar {
+    background-color: rgb(216, 189, 216);
+}
+
+/* Change button color */
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #937eac !important;
+    border-color: #937eac !important;
 }
