@@ -23,12 +23,18 @@ var questionAnswer = {
     ]
 }
 
-function quiz() {
+function quizStart() {
     // Picks a random question
-    roll = diceRoll(questionAnswer.question.length);
+    var questionNum = diceRoll(questionAnswer.question.length);
 
-    // Inserts the question into the "question id"
-    question.textContent = questionAnswer.question[roll];
+    // Inserts the question into the "question element"
+    question.textContent = questionAnswer.question[questionNum];
+
+    // Picks a button from one of the four
+    buttonChoice = diceRoll(3);
+
+    // Places the answer into the button
+    placeAnswer(questionNum, buttonChoice);
 }
 
 
@@ -45,10 +51,14 @@ function verification(num) {
 
 // Takes in given parameters and spits out a random number
 function diceRoll(given) {
-    var roll = Math.floor(Math.random() * given) + 1;
+    var roll = Math.floor(Math.random() * given);
     return roll;
 }
 
+function placeAnswer(questionNum, buttonChoice) {
+    var button = document.getElementById(buttonChoice);
+    button.textContent = questionAnswer.answer[questionNum];
+}
 
 
 container.addEventListener("click", function(event) {
