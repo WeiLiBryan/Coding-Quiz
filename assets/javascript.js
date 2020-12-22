@@ -23,6 +23,15 @@ var questionAnswer = {
     ]
 }
 
+function quiz() {
+    // Picks a random question
+    roll = diceRoll(questionAnswer.question.length);
+
+    // Inserts the question into the "question id"
+    question.textContent = questionAnswer.question[roll];
+}
+
+
 // Compares answer to question
 function verification(num) {
     if (questionAnswer.question[num] === questionAnswer.answer[num]) {
@@ -32,6 +41,12 @@ function verification(num) {
     else {
         return true;
     }
+}
+
+// Takes in given parameters and spits out a random number
+function diceRoll(given) {
+    var roll = Math.floor(Math.random() * given) + 1;
+    return roll;
 }
 
 
