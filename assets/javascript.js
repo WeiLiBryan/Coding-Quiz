@@ -7,6 +7,7 @@ var buttonClass = document.querySelector(".btn");
 var startButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#startScreen");
 var main = document.querySelector("#main");
+var body = document.body;
 
 var time = 0;
 var questionNumber = 0;
@@ -127,11 +128,6 @@ function displayButtons() {
     }
 }
 
-function diceRoll(given) {
-    var roll = Math.floor(Math.random() * given);
-    return roll;
-}
-
 // Fills buttons with answers
 function fillButtons() {
 
@@ -156,54 +152,72 @@ function nextQuestion() {
 // Displays whether user is correct or wrong
 function confirmation(bool) {
     var confirmationDiv = document.createElement("div");
+    confirmationDiv.innerHTML = "";
     var confirmationP = document.createElement("p");
-    confirmationDiv.setAttribute("id", "question");
+    confirmationDiv.setAttribute("id", "confirmation");
 
     var horizontalRule = document.createElement("hr");
 
     if (bool) { 
-        confirmationP.textContent = "Correct!";
+        confirmationP.textContent = "Question " + (questionNumber+1) + ": Correct!";
     }
     else {
-        confirmationP.textContent = "Wrong!";
+        confirmationP.textContent = "Question " + (questionNumber+1) + ": Wrong!";
     }
 
     confirmationDiv.appendChild(horizontalRule);
     confirmationDiv.appendChild(confirmationP);
-    main.appendChild(confirmationDiv);
+    body.appendChild(confirmationDiv);
 }
 
 
-// Start of the webpage
-startButton.addEventListener("click", function(event) {
-    event.preventDefault();
-    // Clears screen
-    main.innerHTML = "";
-});
+// // Start of the webpage
+// startButton.addEventListener("click", function(event) {
+//     event.preventDefault();
+//     // Clears screen
+//     main.innerHTML = "";
+// });
 
 
 main.addEventListener("click", function(event) {
     event.preventDefault();
+    if (event.target === startButton){
+        event.preventDefault();
+        // Clears screen
+        main.innerHTML = "";
+    }
     
-    nextQuestion();
-    if (event.target.matches("button")) {
-        var chosenAnswer = event.target.textContent;
-
-        console.log("choice: " + chosenAnswer, "answer: " + questionAnswer[questionNumber].correct);
-
-        if (chosenAnswer === questionAnswer[questionNumber].correct) {
-            confirmation(true);
-        }
-        else {
-            confirmation(false);
-        }
-        questionNumber++;
+    if (questionNumber < 5){
         nextQuestion();
+        if (event.target.matches("button")) {
+            var chosenAnswer = event.target.textContent;
+            
+            console.log("choice: " + chosenAnswer, "answer: " + questionAnswer[questionNumber].correct);
+
+            if (chosenAnswer === questionAnswer[questionNumber].correct) {
+                confirmation(true);
+            }
+            else {
+                confirmation(false);
+            }
+
+            questionNumber++;
+            nextQuestion();
+        }
     }
 
-    if (questionNumber === 5) {
-        main.innerHTML = "";
-        confirmationDiv.innerHTML = "";
+    else {
+        var scoreDiv = document.createElement("div");
+        var scoreP = document.createElement("p");
+        scoreP.setAttribute("id", "question");
+        scoreP.textContent = "Enter your initials here";
+        var score = document.createElement("input");
+        score.setAttribute("class", "form-control form-control-sm");
+        score.setAttribute("placeholder", "Initials");
+        score.setAttribute("type", "text");
+        score.setAttribute("aria-label", ".form-control-sm example");
+        scoreDiv.appendChild(scoreP);
+        scoreDiv.appendChild(score);
     }
 
 });
