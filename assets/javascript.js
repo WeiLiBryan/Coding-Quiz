@@ -9,10 +9,9 @@ var startScreen = document.querySelector("#startScreen");
 var main = document.querySelector("#main");
 var body = document.body;
 
-var time = 0;
+var time;
 var questionNumber = 0;
-var buttonSpot;
-var hasBegun = false;
+var clock;
 
 var questionAnswer = [
     {
@@ -170,24 +169,60 @@ function confirmation(bool) {
     body.appendChild(confirmationDiv);
 }
 
+function countdown() {
+    time = 50;
+    clock = setInterval(function () {
+        time--;
+        timer.textContent = "Timer: " + time;
+        if (time === 0){
+            clearInterval(clock);
+            registerScore();
+        }
+    }, 1000)
+}
 
-// // Start of the webpage
-// startButton.addEventListener("click", function(event) {
-//     event.preventDefault();
-//     // Clears screen
-//     main.innerHTML = "";
-// });
+function registerScore() {
+    // Clear everything
+    body.innerHTML = "";
 
+    // Generates a div
+    var scoreDiv = document.createElement("div");
+    scoreDiv.setAttribute("id", "format");
+
+    // 2 p tags in div
+    var scoreP = document.createElement("p");
+    var scoreP2 = document.createElement("p");
+    scoreP.setAttribute("id", "format");
+    scoreP2.setAttribute("id", "format");
+
+    // Text that appears on the page
+    scoreP.textContent = "Final Score: " + time;
+    scoreP2.textContent = "Enter your signature here";
+
+    // score variable
+    var score = document.createElement("input");
+    score.setAttribute("class", "form-control form-control-sm");
+    score.setAttribute("placeholder", "Signature");
+    score.setAttribute("type", "text");
+    score.setAttribute("aria-label", ".form-control-sm example");
+
+    // Appends to body
+    scoreDiv.appendChild(scoreP);
+    scoreDiv.appendChild(scoreP2);
+    scoreDiv.appendChild(score);
+    body.appendChild(scoreDiv);
+}
 
 main.addEventListener("click", function(event) {
     event.preventDefault();
+
+    // If start is pressed clears screen and starts timer
     if (event.target === startButton){
         event.preventDefault();
         // Clears screen
         main.innerHTML = "";
+        countdown();
     }
-    
-    if (questionNumber < 5){
         nextQuestion();
         if (event.target.matches("button")) {
             var chosenAnswer = event.target.textContent;
@@ -196,29 +231,24 @@ main.addEventListener("click", function(event) {
 
             if (chosenAnswer === questionAnswer[questionNumber].correct) {
                 confirmation(true);
+                time += 15;
             }
             else {
                 confirmation(false);
+                time -= 15;
             }
-
+            
+            // Keep going until it runs out of questions
+            if (questionNumber < 4) {
             questionNumber++;
             nextQuestion();
+            }
+            // Once limit is reached register score
+            else{
+                clearInterval(clock);
+                registerScore();
+            }
         }
-    }
-
-    else {
-        var scoreDiv = document.createElement("div");
-        var scoreP = document.createElement("p");
-        scoreP.setAttribute("id", "question");
-        scoreP.textContent = "Enter your initials here";
-        var score = document.createElement("input");
-        score.setAttribute("class", "form-control form-control-sm");
-        score.setAttribute("placeholder", "Initials");
-        score.setAttribute("type", "text");
-        score.setAttribute("aria-label", ".form-control-sm example");
-        scoreDiv.appendChild(scoreP);
-        scoreDiv.appendChild(score);
-    }
 
 });
 
