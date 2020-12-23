@@ -243,7 +243,7 @@ function leaderboard() {
     var leaderboard = document.createElement("div");
     var leaderboardP = document.createElement("p");
     leaderboardP.setAttribute("id", "Leaderboard-head");
-    leaderboardP.textContent = "Latest User: " + leaderSig + "Score: " + leaderScore;
+    leaderboardP.textContent = "Latest User: " + leaderSig + "   Score: " + leaderScore;
     leaderboard.appendChild(leaderboardP);
     body.appendChild(leaderboard);
 }
