@@ -144,6 +144,7 @@ function fillButtons() {
 
 function nextQuestion() {
     main.innerHTML = "";
+    console.log("question index: " + questionNumber);
     // Inserts and displays question
     displayQuestion();
     // Inserts and displays buttons
@@ -169,8 +170,7 @@ function confirmation(bool) {
 
     confirmationDiv.appendChild(horizontalRule);
     confirmationDiv.appendChild(confirmationP);
-    document.body.appendChild(confirmationDiv);
-
+    main.appendChild(confirmationDiv);
 }
 
 
@@ -183,22 +183,27 @@ startButton.addEventListener("click", function(event) {
 
 
 main.addEventListener("click", function(event) {
+    event.preventDefault();
     
+    nextQuestion();
     if (event.target.matches("button")) {
-        console.log("question index: " + questionNumber);
-        nextQuestion();
-        questionNumber++;
         var chosenAnswer = event.target.textContent;
-        console.log("chosen: " + chosenAnswer, "correct: " + questionAnswer[questionNumber].correct);
 
-        if (chosenAnswer === questionAnswer[questionNumber - 1].correct) {
+        console.log("choice: " + chosenAnswer, "answer: " + questionAnswer[questionNumber].correct);
+
+        if (chosenAnswer === questionAnswer[questionNumber].correct) {
             confirmation(true);
-            console.log("correct");
         }
         else {
             confirmation(false);
-            console.log("wrong");
         }
+        questionNumber++;
+        nextQuestion();
+    }
+
+    if (questionNumber === 5) {
+        main.innerHTML = "";
+        confirmationDiv.innerHTML = "";
     }
 
 });
