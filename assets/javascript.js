@@ -7,6 +7,7 @@ var buttonClass = document.querySelector(".btn");
 var startButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#startScreen");
 var main = document.querySelector("#main");
+var body = document.getElementById("#background");
 
 var time = 0;
 var questionNumber = 0;
@@ -21,7 +22,7 @@ var questionAnswer = [
             "<scripting>",
             "<js>"
         ],
-        correct: "<script>"
+        correct: 0
     },
 
     {
@@ -32,7 +33,7 @@ var questionAnswer = [
             "<script href=\"xxx.js\">",
             "<script name=\"xxx.js\">"
         ],
-        correct: "<script src=\"xxx.js\">"
+        correct: 1
     },
 
     {
@@ -43,7 +44,7 @@ var questionAnswer = [
             "Maybe",
             "False"
         ],
-        correct: "False"
+        correct: 3
     },
 
     {
@@ -54,7 +55,7 @@ var questionAnswer = [
             "msg(\"Hello World\");",
             "alert(\"Hello World\")"
         ],
-        correct: "alert(\"Hello World\")"
+        correct: 3
     },
 
     {
@@ -65,7 +66,7 @@ var questionAnswer = [
             "function myFunction()",
             "function:myFunction()"
         ],
-        correct: "function myFunction()"
+        correct: 2
     }
 ]
 
@@ -109,7 +110,7 @@ function displayButtons() {
 
         // Button
         var answerButton = document.createElement("button");
-        answerButton.setAttribute("class", "btn btn-primary");
+        answerButton.setAttribute("class", "btn btn-primary answerbutton");
         answerButton.setAttribute("type", "button");
         answerButton.setAttribute("id", i);
 
@@ -142,18 +143,56 @@ function fillButtons() {
 function nextQuestion() {
     // Clears screen
     main.innerHTML = "";
-
+    // Inserts and displays question
     displayQuestion();
+    // Inserts and displays buttons
     displayButtons();
-
+    // Fills displayed buttons
     fillButtons();
 }
+
+function confirmation(bool) {
+    var footer = document.createElement("footer");
+    var footerP = document.createElement("p");
+    footer.setAttribute("id", "question")
+    var horizontalRule = document.createElement("hr");
+
+    if (bool) { 
+        footerP.textContent = "Correct!";
+    }
+    else {
+        footerP.textContent = "Wrong!";
+    }
+
+    footer.appendChild(horizontalRule);
+    footer.appendChild(footerP);
+    body.appendChild(footer);
+
+}
+
 
 // Start of the webpage
 startButton.addEventListener("click", function(event) {
     event.preventDefault();
-
     nextQuestion();
+
+    var answerButton = document.querySelector(".answerbutton");
+
+    answerButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        var chosenAnswerId = parseInt(this.id);
+
+        if (chosenAnswerId === questionAnswer[questionNumber].correct) {
+            confirmation(true);
+        }
+
+        
+        questionNumber++;
+        nextQuestion();
+    });
 });
+
+
 
 
