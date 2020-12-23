@@ -80,8 +80,34 @@ function displayQuestion() {
     main.appendChild(questionDiv);
 }
 
-function generateButtons() {
-    var 
+// Generates buttons and assigns them to bootstrap classes
+function displayButtons() {
+
+    // Generates 4 buttons
+    for (var i=0; i < 4; i++) {
+        // Container div
+        var buttonDiv = document.createElement("div");
+        buttonDiv.setAttribute("class", "container");
+
+        // Row div
+        var gridRow = document.createElement("div");
+        gridRow.setAttribute("class", "row mx-auto");
+
+        // Column div
+        var gridColumn = document.createElement("div");
+        gridColumn.setAttribute("class", "col-xs-1 text-center");
+
+        // Button
+        var answerButton = document.createElement("button");
+        answerButton.setAttribute("class", "btn btn-primary");
+        answerButton.setAttribute("type", "button");
+
+        // Appends all the elements
+        gridColumn.appendChild(answerButton);
+        gridRow.appendChild(gridColumn);
+        buttonDiv.appendChild(gridRow);
+        main.appendChild(buttonDiv);
+    }
 }
 
 // Start of the webpage
