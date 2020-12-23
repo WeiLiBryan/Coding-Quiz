@@ -10,6 +10,7 @@ var main = document.querySelector("#main");
 
 var time = 0;
 var questionNumber = 0;
+var buttonSpot;
 
 var questionAnswer = {
     question: [
@@ -101,13 +102,27 @@ function displayButtons() {
         var answerButton = document.createElement("button");
         answerButton.setAttribute("class", "btn btn-primary");
         answerButton.setAttribute("type", "button");
+        answerButton.setAttribute("id", i);
 
+        var breakLine = document.createElement("br");
         // Appends all the elements
         gridColumn.appendChild(answerButton);
         gridRow.appendChild(gridColumn);
         buttonDiv.appendChild(gridRow);
         main.appendChild(buttonDiv);
+        main.appendChild(breakLine);
+        
     }
+}
+
+function diceRoll(given) {
+    var roll = Math.floor(Math.random() * given);
+    return roll;
+}
+
+function insertAnswer(buttonSpot) {
+    var button = document.getElementById(buttonSpot);
+    button.textContent = questionAnswer.answer[questionNumber];
 }
 
 // Start of the webpage
@@ -115,10 +130,21 @@ startButton.addEventListener("click", function(event) {
     event.preventDefault();
 
     // Clears start screen
-    startScreen.innerHTML = "";
+    main.innerHTML = "";
 
     displayQuestion();
     displayButtons();
+
+    // Picks a random spot to put answer
+    buttonSpot = diceRoll(4);
+
+    // Inserts answer into a random box
+    insertAnswer(buttonSpot);
+
+    // Fills in other boxes
+    fill();
+
+    
 });
 
 
