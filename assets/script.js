@@ -3,6 +3,7 @@ var timer = document.querySelector("#timer");
 var question = document.querySelector("#question");
 var container = document.querySelector("#container");
 var footer = document.querySelector("#footer");
+var button = document.querySelector(".btn");
 
 var time = 0;
 
@@ -26,8 +27,8 @@ var questionAnswer = {
     ]
 }
 
-var wrongAnswers = {
-    first: [
+var wrongAnswers = [
+    [
         "<javascript>",
         "<head>",
         "<script src=xxx.js>",
@@ -36,7 +37,7 @@ var wrongAnswers = {
         "function:myFunction()"
     ],
 
-    second: [
+    [
         "<scripting>",
         "<body>",
         "<script href=\"xxx.js\">",
@@ -45,7 +46,7 @@ var wrongAnswers = {
         "function = myFunction()"
     ],
 
-    third: [
+    [
         "<js>",
         "Neither",
         "<script name=\"xxx.js\">",
@@ -53,7 +54,7 @@ var wrongAnswers = {
         "msgBox(\"Hello World\");",
         "myFunction()"
     ]
-}
+]
 
 function quizStart() {
 
@@ -64,7 +65,7 @@ function quizStart() {
 
         // Picks a button from one of the four
         var buttonChoice = diceRoll(4);
-        console.log(buttonChoice);
+        // console.log(buttonChoice);
 
         // Places the answer into the button
         placeAnswer(questionNum, buttonChoice);
@@ -102,7 +103,7 @@ function placeAnswer(questionNum, buttonChoice) {
 // Fills other buttons
 function insertJunk(questionNum) {
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < wrongAnswers.length; i++) {
         button = document.getElementById(i);
         
         // If button has no text then set text of button to correspond with the question
@@ -140,6 +141,14 @@ function wrongAnswer() {
 //     }
 
 //   });
+button.addEventListener("click", function(event) {
+    event.preventDefault();
 
+    var picked = this.
+
+
+
+
+});
 
   quizStart();
