@@ -185,6 +185,11 @@ function registerScore() {
     // Clear everything
     body.innerHTML = "";
 
+    // Since time is the score it sets it to 0 if it goes into the negative
+    if (time < 0){
+        time = 0;
+    }
+
     // Generates a div
     var scoreDiv = document.createElement("div");
     scoreDiv.setAttribute("id", "format");
@@ -199,18 +204,26 @@ function registerScore() {
     scoreP.textContent = "Final Score: " + time;
     scoreP2.textContent = "Enter your signature here";
 
-    // score variable
-    var score = document.createElement("input");
-    score.setAttribute("class", "form-control form-control-sm");
-    score.setAttribute("placeholder", "Signature");
-    score.setAttribute("type", "text");
-    score.setAttribute("aria-label", ".form-control-sm example");
+    // input field on page
+    var sig = document.createElement("input");
+    sig.setAttribute("class", "form-control form-control-sm");
+    sig.setAttribute("placeholder", "Signature");
+    sig.setAttribute("type", "text");
+    sig.setAttribute("aria-label", ".form-control-sm example");
+    var userSig = sig.value;
 
     // Appends to body
     scoreDiv.appendChild(scoreP);
     scoreDiv.appendChild(scoreP2);
-    scoreDiv.appendChild(score);
+    scoreDiv.appendChild(sig);
     body.appendChild(scoreDiv);
+
+    store(userSig);
+}
+
+function store(userSig) {
+    localStorage.setItem("signature", JSON.stringify(userSig));
+    localStorage.setItem("score", JSON.stringify(timer));
 }
 
 main.addEventListener("click", function(event) {
