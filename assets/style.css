@@ -22,3 +22,10 @@
 button {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+#Leaderboard-head {
+    font-size: 60px;
+    font-style: underline;
+    font-weight: bold;
+    text-align: center;
+}

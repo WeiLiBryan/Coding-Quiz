@@ -1,11 +1,7 @@
 var highscore = document.querySelector("#highscore");
+var navbar = document.querySelector(".navbar");
 var timer = document.querySelector("#timer");
-var question = document.querySelector("#question");
-var container = document.querySelector("#container");
-var footer = document.querySelector("#footer");
-var buttonClass = document.querySelector(".btn");
 var startButton = document.querySelector("#startButton");
-var startScreen = document.querySelector("#startScreen");
 var main = document.querySelector("#main");
 var body = document.body;
 
@@ -170,15 +166,15 @@ function confirmation(bool) {
 }
 
 function countdown() {
-    time = 50;
+    time = 40;
     clock = setInterval(function () {
         time--;
         timer.textContent = "Timer: " + time;
-        if (time === 0){
+        if (time < 0){
             clearInterval(clock);
             registerScore();
         }
-    }, 1000)
+    }, 1000);
 }
 
 function registerScore() {
@@ -202,15 +198,15 @@ function registerScore() {
 
     // Text that appears on the page
     scoreP.textContent = "Final Score: " + time;
-    scoreP2.textContent = "Enter your signature here";
+    scoreP2.textContent = "Enter your signature here then press ENTER to submit";
 
     // input field on page
     var sig = document.createElement("input");
     sig.setAttribute("class", "form-control form-control-sm");
     sig.setAttribute("placeholder", "Signature");
+    sig.setAttribute("id", "sig");
     sig.setAttribute("type", "text");
     sig.setAttribute("aria-label", ".form-control-sm example");
-    var userSig = sig.value;
 
     // Appends to body
     scoreDiv.appendChild(scoreP);
@@ -218,13 +214,43 @@ function registerScore() {
     scoreDiv.appendChild(sig);
     body.appendChild(scoreDiv);
 
-    store(userSig);
+    // If enter is pressed, saves to local storage then opens leaderboard
+    var inputId = document.getElementById('sig');
+    inputId.addEventListener('keyup', function onEvent(e) {
+        if (e.keyCode === 13) {
+            store(sig);
+            leaderboard();
+        }
+    });
+    
 }
 
-function store(userSig) {
-    localStorage.setItem("signature", JSON.stringify(userSig));
-    localStorage.setItem("score", JSON.stringify(timer));
+function store(sig) {
+    var user = {
+        signature: sig.value.trim(),
+        score: time
+    };
+    localStorage.setItem("user", JSON.stringify(user));
 }
+
+function leaderboard() {
+    body.innerHTML = "";
+
+    var leader = JSON.parse(localStorage.getItem("user"));
+    var leaderSig = leader.signature;
+    var leaderScore = leader.score;
+
+    var leaderboard = document.createElement("div");
+    var leaderboardP = document.createElement("p");
+    leaderboardP.setAttribute("id", "Leaderboard-head");
+    leaderboardP.textContent = "Latest User: " + leaderSig + "Score: " + leaderScore;
+    leaderboard.appendChild(leaderboardP);
+    body.appendChild(leaderboard);
+}
+
+
+
+
 
 main.addEventListener("click", function(event) {
     event.preventDefault();
@@ -267,5 +293,11 @@ main.addEventListener("click", function(event) {
 
 
 
+navbar.addEventListener("click", function(event) {
+    event.preventDefault();
+    if (event.target === highscore) {
+        leaderboard();
+    }        
+});
 
 
