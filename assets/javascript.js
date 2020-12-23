@@ -5,9 +5,11 @@ var container = document.querySelector("#container");
 var footer = document.querySelector("#footer");
 var button = document.querySelector(".btn");
 var startButton = document.querySelector("#startButton");
-var startScreen = document.querySelector("#start");
+var startScreen = document.querySelector("#startScreen");
+var main = document.querySelector("#main");
 
 var time = 0;
+var questionNumber = 0;
 
 var questionAnswer = {
     question: [
@@ -58,13 +60,39 @@ var wrongAnswers = [
     ]
 ]
 
+// Function generates question for the page
+function displayQuestion() {
+    // Generate a div with an id of question
+    var questionDiv = document.createElement("div");
+    var questionP = document.createElement("p");
+    var horizontalRule = document.createElement("hr");
+    questionDiv.setAttribute("id", "question");
+
+    // Set the text within the p tag equal to whatever question number is given
+    questionP.textContent = questionAnswer.question[questionNumber];
+
+
+    // Append p tag to question div
+    questionDiv.appendChild(questionP);
+    questionDiv.appendChild(horizontalRule);
+
+    // Append question div to main div
+    main.appendChild(questionDiv);
+}
+
+function generateButtons() {
+    var 
+}
+
+// Start of the webpage
 startButton.addEventListener("click", function(event) {
     event.preventDefault();
 
+    // Clears start screen
     startScreen.innerHTML = "";
-    
 
-
-
-
+    displayQuestion();
+    displayButtons();
 });
+
+
