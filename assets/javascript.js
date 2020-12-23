@@ -3,7 +3,7 @@ var timer = document.querySelector("#timer");
 var question = document.querySelector("#question");
 var container = document.querySelector("#container");
 var footer = document.querySelector("#footer");
-var button = document.querySelector(".btn");
+var buttonClass = document.querySelector(".btn");
 var startButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#startScreen");
 var main = document.querySelector("#main");
@@ -12,54 +12,63 @@ var time = 0;
 var questionNumber = 0;
 var buttonSpot;
 
-var questionAnswer = {
-    question: [
-        "Inside which HTML element do we put the JavaScript?", 
-        "Where is the correct place to insert a JavaScript?",
-        "What is the correct syntax for referring to an external script called \"xxx.js\"?",
-        "The external JavaScript file must contain the <script> tag.",
-        "How do you write \"Hello World\" in an alert box?",
-        "How do you create a function in JavaScript?"
-    ],
+var questionAnswer = [
+    {
+        question: "Inside which HTML element do we put the JavaScript?",
+        answers: [
+            "<script>",
+            "<javascript>",
+            "<scripting>",
+            "<js>"
+        ],
+        correct: "<script>"
+    },
 
-    answer: [
-        "<script>",
-        "Both",
-        "<script src=\"xxx.js\">",
-        "False",
-        "alert(\"Hello World\")",
-        "function myFunction()"
-    ]
-}
+    {
+        question: "What is the correct syntax for referring to an external script called \"xxx.js\"?",
+        answers: [
+            "<script src=xxx.js>",
+            "<script src=\"xxx.js\">",
+            "<script href=\"xxx.js\">",
+            "<script name=\"xxx.js\">"
+        ],
+        correct: "<script src=\"xxx.js\">"
+    },
 
-var wrongAnswers = [
-    [
-        "<javascript>",
-        "<head>",
-        "<script src=xxx.js>",
-        "True",
-        "alertBox(\"Hello World\")",
-        "function:myFunction()"
-    ],
+    {
+        question: "The external JavaScript file must contain the <script> tag.",
+        answers: [
+            "Depends",
+            "True",
+            "Maybe",
+            "False"
+        ],
+        correct: "False"
+    },
 
-    [
-        "<scripting>",
-        "<body>",
-        "<script href=\"xxx.js\">",
-        "Maybe",
-        "msg(\"Hello World\");",
-        "function = myFunction()"
-    ],
+    {
+        question: "How do you write \"Hello World\" in an alert box?",
+        answers: [
+            "msgBox(\"Hello World\");",
+            "alertBox(\"Hello World\")",
+            "msg(\"Hello World\");",
+            "alert(\"Hello World\")"
+        ],
+        correct: "alert(\"Hello World\")"
+    },
 
-    [
-        "<js>",
-        "Neither",
-        "<script name=\"xxx.js\">",
-        "Depends",
-        "msgBox(\"Hello World\");",
-        "myFunction()"
-    ]
+    {
+        question: "How do you create a function in JavaScript?",
+        answers: [
+            "myFunction()",
+            "function = myFunction()",
+            "function myFunction()",
+            "function:myFunction()"
+        ],
+        correct: "function myFunction()"
+    }
 ]
+
 
 // Function generates question for the page
 function displayQuestion() {
@@ -70,7 +79,7 @@ function displayQuestion() {
     questionDiv.setAttribute("id", "question");
 
     // Set the text within the p tag equal to whatever question number is given
-    questionP.textContent = questionAnswer.question[questionNumber];
+    questionP.textContent = questionAnswer[questionNumber].question;
 
 
     // Append p tag to question div
@@ -120,31 +129,31 @@ function diceRoll(given) {
     return roll;
 }
 
-function insertAnswer(buttonSpot) {
-    var button = document.getElementById(buttonSpot);
-    button.textContent = questionAnswer.answer[questionNumber];
+// Fills buttons with answers
+function fillButtons() {
+
+    for (var id=0; id < 4; id++) {
+        var button = document.getElementById(id);
+
+        button.textContent = questionAnswer[questionNumber].answers[id];
+    }
+}
+
+function nextQuestion() {
+    // Clears screen
+    main.innerHTML = "";
+
+    displayQuestion();
+    displayButtons();
+
+    fillButtons();
 }
 
 // Start of the webpage
 startButton.addEventListener("click", function(event) {
     event.preventDefault();
 
-    // Clears start screen
-    main.innerHTML = "";
-
-    displayQuestion();
-    displayButtons();
-
-    // Picks a random spot to put answer
-    buttonSpot = diceRoll(4);
-
-    // Inserts answer into a random box
-    insertAnswer(buttonSpot);
-
-    // Fills in other boxes
-    fill();
-
-    
+    nextQuestion();
 });
 
 
