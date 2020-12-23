@@ -7,11 +7,11 @@ var buttonClass = document.querySelector(".btn");
 var startButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#startScreen");
 var main = document.querySelector("#main");
-var body = document.getElementById("#background");
 
 var time = 0;
 var questionNumber = 0;
 var buttonSpot;
+var hasBegun = false;
 
 var questionAnswer = [
     {
@@ -22,7 +22,7 @@ var questionAnswer = [
             "<scripting>",
             "<js>"
         ],
-        correct: 0
+        correct: "<script>",
     },
 
     {
@@ -33,7 +33,7 @@ var questionAnswer = [
             "<script href=\"xxx.js\">",
             "<script name=\"xxx.js\">"
         ],
-        correct: 1
+        correct: "<script src=\"xxx.js\">"
     },
 
     {
@@ -44,7 +44,7 @@ var questionAnswer = [
             "Maybe",
             "False"
         ],
-        correct: 3
+        correct: "False"
     },
 
     {
@@ -55,7 +55,7 @@ var questionAnswer = [
             "msg(\"Hello World\");",
             "alert(\"Hello World\")"
         ],
-        correct: 3
+        correct: "alert(\"Hello World\")"
     },
 
     {
@@ -66,9 +66,9 @@ var questionAnswer = [
             "function myFunction()",
             "function:myFunction()"
         ],
-        correct: 2
+        correct: "function myFunction()"
     }
-]
+];
 
 
 // Function generates question for the page
@@ -94,12 +94,13 @@ function displayQuestion() {
 // Generates buttons and assigns them to bootstrap classes
 function displayButtons() {
 
+    // Container div
+    var container = document.createElement("div");
+    container.setAttribute("class", "container");
+
     // Generates 4 buttons
     for (var i=0; i < 4; i++) {
-        // Container div
-        var buttonDiv = document.createElement("div");
-        buttonDiv.setAttribute("class", "container");
-
+        
         // Row div
         var gridRow = document.createElement("div");
         gridRow.setAttribute("class", "row mx-auto");
@@ -118,9 +119,10 @@ function displayButtons() {
         // Appends all the elements
         gridColumn.appendChild(answerButton);
         gridRow.appendChild(gridColumn);
-        buttonDiv.appendChild(gridRow);
-        main.appendChild(buttonDiv);
-        main.appendChild(breakLine);
+        container.appendChild(gridRow);
+        container.appendChild(breakLine);
+        main.appendChild(container);
+        
         
     }
 }
@@ -141,7 +143,6 @@ function fillButtons() {
 }
 
 function nextQuestion() {
-    // Clears screen
     main.innerHTML = "";
     // Inserts and displays question
     displayQuestion();
@@ -151,22 +152,24 @@ function nextQuestion() {
     fillButtons();
 }
 
+// Displays whether user is correct or wrong
 function confirmation(bool) {
-    var footer = document.createElement("footer");
-    var footerP = document.createElement("p");
-    footer.setAttribute("id", "question")
+    var confirmationDiv = document.createElement("div");
+    var confirmationP = document.createElement("p");
+    confirmationDiv.setAttribute("id", "question");
+
     var horizontalRule = document.createElement("hr");
 
     if (bool) { 
-        footerP.textContent = "Correct!";
+        confirmationP.textContent = "Correct!";
     }
     else {
-        footerP.textContent = "Wrong!";
+        confirmationP.textContent = "Wrong!";
     }
 
-    footer.appendChild(horizontalRule);
-    footer.appendChild(footerP);
-    body.appendChild(footer);
+    confirmationDiv.appendChild(horizontalRule);
+    confirmationDiv.appendChild(confirmationP);
+    document.body.appendChild(confirmationDiv);
 
 }
 
@@ -174,24 +177,32 @@ function confirmation(bool) {
 // Start of the webpage
 startButton.addEventListener("click", function(event) {
     event.preventDefault();
-    nextQuestion();
-
-    var answerButton = document.querySelector(".answerbutton");
-
-    answerButton.addEventListener("click", function(event) {
-        event.preventDefault();
-
-        var chosenAnswerId = parseInt(this.id);
-
-        if (chosenAnswerId === questionAnswer[questionNumber].correct) {
-            confirmation(true);
-        }
-
-        
-        questionNumber++;
-        nextQuestion();
-    });
+    // Clears screen
+    main.innerHTML = "";
 });
+
+
+main.addEventListener("click", function(event) {
+    
+    if (event.target.matches("button")) {
+        console.log("question index: " + questionNumber);
+        nextQuestion();
+        questionNumber++;
+        var chosenAnswer = event.target.textContent;
+        console.log("chosen: " + chosenAnswer, "correct: " + questionAnswer[questionNumber].correct);
+
+        if (chosenAnswer === questionAnswer[questionNumber - 1].correct) {
+            confirmation(true);
+            console.log("correct");
+        }
+        else {
+            confirmation(false);
+            console.log("wrong");
+        }
+    }
+
+});
+
 
 
 
